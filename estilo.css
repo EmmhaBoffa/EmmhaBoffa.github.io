@@ -183,19 +183,19 @@ body{
     background-position: center;
   }
   .up{
-    transform: translate(180px,399px);
+    transform: translate(160px,420px);
     background-image: url(imagen/up.png);
   }
   .down{
-    transform: translate(180px,500px);
+    transform: translate(160px,600px);
     background-image: url(imagen/down.png);
   }
   .left{
-    transform: translate(100px,450px);
+    transform: translate(50px,500px);
     background-image: url(imagen/left.png);
   }
   .rigth{
-    transform: translate(260px,450px);
+    transform: translate(280px,500px);
     background-image: url(imagen/rigth.png);
   }
 }
