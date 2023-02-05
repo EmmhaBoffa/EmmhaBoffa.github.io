@@ -145,7 +145,7 @@ const moverSerpiente = () => {
         aumentarPuntuacion();
         gameBoard.removeChild(food);
         const comer = new Audio("sounds/eat.mp3");
-         comer.volume = 0.2;
+        comer.volume = 0.4;
         comer.play();
         let snakeUnit = document.createElement("div");
         snakeUnit.classList.add("snake-unit");
@@ -328,6 +328,34 @@ buttonSound.onclick = function(){
 
     
 };
+
+let up = document.querySelector(".up");
+let down = document.querySelector(".down");
+let left = document.querySelector(".left");
+let rigth = document.querySelector(".rigth");
+
+up.onclick = function(){
+    console.log("up");
+    if (movement != "down"){
+        movement = "up"
+    }
+}
+down.onclick = function(){
+    if (movement != "up"){
+        movement = "down"
+    }
+}
+left.onclick = function(){
+    if (movement != "rigth"){
+        movement = "left"
+    }
+}
+rigth.onclick = function(){
+    if (movement != "left"){
+        movement = "rigth"
+    }
+}
+
 
 
 buttonSound.style.backgroundImage = "url('imagen/sin-sonido.png')";
