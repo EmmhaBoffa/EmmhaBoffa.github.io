@@ -1,0 +1,159 @@
+body{
+  background-color: #e17572;
+}
+#container{
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin: auto;
+  padding-top: 15vh;
+}
+.lastPuntuacion{
+  position: relative;
+  height: 20px;
+  width: 230px;
+  top: 368px;
+  color: #fff;
+}
+.button-sound{
+  padding: 0px;
+  margin: 0px;
+  top: 0px;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background-color: #ff426a;
+}
+.Title{
+  display: inline-block;
+  position: relative;
+  color: #6BE8CA;
+  top: -320px;
+  left: 125px;
+  padding-left: 5px;
+  padding-right: 5px;
+  
+}
+.Title:nth-child(1){
+  animation: color;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+.Title:nth-child(2){
+  animation: color;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+.Title:nth-child(3){
+  animation: color;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+.Title:nth-child(4){
+  animation: color;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-direction: reverse;
+}
+.Title:nth-child(5){
+  animation: color;
+  animation-duration: 9s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+}
+#game-board {
+    width: 400px;
+    height: 400px;
+    border: 1px solid black;
+    position: absolute;
+    margin: auto;
+    background-color: #2b0b16;
+    z-index: 0;
+    color: #fff;
+  }
+  .start{
+    position: relative;
+    font-family: Game;
+    font-size: 30px;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    color: #ce1446;
+    border-radius: 25px;
+    background-color:#368986;
+    padding: 1px;
+    left: -10px;
+    margin-top: 270px;
+    width: 125px;
+    height: 70px;
+    transition: 0.2s;
+  }
+  .start:hover{
+    color: #a70e37;
+    background-color: #005c81;
+  }
+
+  #menu{
+    border-radius: 3px;
+    position: absolute;
+    width: 410px;
+    height: 410px;
+    margin: auto;
+    background-color: #2b0b16;
+    z-index: 1;
+  }
+  .snake-unit {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: #2B993B;
+  }
+
+  .head {
+    background-color: #4BE661;
+  }
+  .display {
+    position: relative;
+    border:3px solid #fff;
+    width: 200px;
+    height: 200px;
+    left: 100px;
+    top: -310px;
+  }
+  .food {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    background-color: red;
+    animation-name: aparece;
+    animation-duration: 0.5s;
+    animation-direction: alternate-reverse;
+    border-radius: 3px;
+  }
+
+  @keyframes aparece {
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.5);
+    }
+  }
+  @keyframes color {
+    0%{
+      color: #7592FF;
+    }
+    15%{
+      color: #6BA6E8;
+    }
+    40%{
+      color: #82DEFF;
+   }
+   60%{
+      color: #6BE8E8;
+    }
+   80%{
+      color: #75FFD9;
+    }
+}
+
+  
