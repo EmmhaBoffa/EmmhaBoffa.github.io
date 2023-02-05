@@ -74,7 +74,7 @@ body{
   }
   .start{
     position: relative;
-    font-family: Game;
+    font-family: fantasy;
     font-size: 30px;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     color: #ce1446;
