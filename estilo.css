@@ -171,9 +171,9 @@ body{
   }
   .control{
     display: inline-block;
-    position: absolute;
-    height: 50px;
-    width: 50px;
+    position: fixed;
+    height: 100px;
+    width: 100px;
     border: 2px solid #fff;
     margin: 0px;
     padding: 0px;
@@ -181,21 +181,26 @@ body{
     transform: translateX(10px);
     background-color: transparent;
     background-position: center;
+    background-repeat: no-repeat;
   }
   .up{
-    transform: translate(160px,420px);
+    bottom: 38%;
+    right: 40%;
     background-image: url(imagen/up.png);
   }
   .down{
-    transform: translate(160px,600px);
+    bottom: 10%;
+    right: 40%;
     background-image: url(imagen/down.png);
   }
   .left{
-    transform: translate(50px,500px);
+    bottom: 25%;
+    left: 0;
     background-image: url(imagen/left.png);
   }
   .rigth{
-    transform: translate(280px,500px);
+    bottom: 25%;
+    right: 0;
     background-image: url(imagen/rigth.png);
   }
 }
