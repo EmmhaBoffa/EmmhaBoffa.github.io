@@ -145,7 +145,7 @@ const moverSerpiente = () => {
         aumentarPuntuacion();
         gameBoard.removeChild(food);
         const comer = new Audio("sounds/eat.mp3");
-         comer.volume = 0.4;
+         comer.volume = 0.2;
         comer.play();
         let snakeUnit = document.createElement("div");
         snakeUnit.classList.add("snake-unit");
