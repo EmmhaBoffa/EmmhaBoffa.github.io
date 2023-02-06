@@ -9,16 +9,16 @@ body{
   padding: 0px;
 }
 #container{
-  position: relative;
   width: 400px;
   height: 400px;
-  margin: auto;
+  left: 50%;
+  margin: 0 auto;
 }
 .lastPuntuacion{
   position: relative;
   height: 20px;
   width: 230px;
-  top: 368px;
+  top: 360px;
   color: #fff;
 }
 .button-sound{
@@ -101,12 +101,10 @@ body{
 
   #menu{
     position: fixed;
-    top: 0;
-    left: 0;
     border-radius: 3px;
     position: absolute;
-    width: 410px;
-    height: 410px;
+    width: 400px;
+    height: 400px;
     background-color: #2b0b16;
     z-index: 1;
   }
@@ -196,12 +194,12 @@ body{
   .up{
     
     top: 1;
-    right: 45%;
+    right: 42%;
     background-image: url(imagen/up.png);
   }
   .down{
     bottom: 0;
-    right: 45%;
+    right: 42%;
     background-image: url(imagen/down.png);
   }
   .left{
@@ -211,7 +209,7 @@ body{
   }
   .rigth{
     bottom: 20%;
-    right: 10%;
+    right: 5%;
     background-image: url(imagen/rigth.png);
   }
 }
