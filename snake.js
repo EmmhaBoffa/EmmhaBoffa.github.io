@@ -355,6 +355,12 @@ rigth.onclick = function(){
         movement = "rigth"
     }
 }
+window.addEventListener("blur", function() {
+    musicMenu.pause();
+  });
+window.addEventListener("focus", function() {
+    musicMenu.play();
+});
 
 
 
