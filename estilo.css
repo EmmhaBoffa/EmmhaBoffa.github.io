@@ -102,12 +102,11 @@ body{
   #menu{
     position: fixed;
     top: 0;
-    left: auto;
+    left: 0;
     border-radius: 3px;
     position: absolute;
     width: 410px;
     height: 410px;
-    margin: auto;
     background-color: #2b0b16;
     z-index: 1;
   }
@@ -212,7 +211,7 @@ body{
   }
   .rigth{
     bottom: 20%;
-    right: 5%;
+    right: 10%;
     background-image: url(imagen/rigth.png);
   }
 }
