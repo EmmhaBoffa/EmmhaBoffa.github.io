@@ -6,13 +6,12 @@ const buttonSound = document.querySelector(".button-sound");
 const buttonAudio = new Audio("sounds/button.mp3");
 const music = new Audio("sounds/music.mp3");
 const musicMenu = new Audio(`sounds/menuMusic1.mp3`);
+let canMove;
 let musicSelect = 1;
 let ultimPuntuacion = 0;
 let startGame = false;
 let movement = "rigth";
-let movementBot = "rigth";
 let snake = []; //Serpiente
-let snakeMenu = [];
 let difficulty;
 let puntuacion = 0;
 let soundSwich = 0;
@@ -57,7 +56,6 @@ const comida = () =>{
     food.classList.add("food");
     gameBoard.appendChild(food);
 }
-//Funcion para inicializar la serpiente
 const iniciarSerpiente = () => { 
     for (let i = 0; i < 5; i++) {
         let snakeUnit = document.createElement("div");
@@ -74,7 +72,6 @@ const iniciarSerpiente = () => {
         
     }
 }
-//Funcion si detecta colision con las paredes o ella misma
 const choque = (snake,medida) =>{
     if (snake[0].offsetLeft == medida || snake[0].offsetTop == medida || snake[0].offsetLeft < 0 || snake[0].offsetTop < 0){ //deteccion de paredes
         return true;
@@ -86,36 +83,59 @@ const choque = (snake,medida) =>{
     }
     return false;
 }
-//Funcion para mover la serpiente
-const moverSerpiente = () => {
-    if (choque(snake,400) == true){
-        musicSelect = Math.trunc(Math.random()*3 + 1)
-        console.log(musicSelect);
-        musicMenu.src = "sounds/menuMusic"+musicSelect+".mp3";
-        musicMenu.currentTime = 0;
-        musicMenu.play();
-        musicMenu.volume = soundSwich;
-        ultimPuntuacion = puntuacion;
-        music.pause();
-        music.currentTime = 0;
-        puntuacion = 0;
-        let remove = gameBoard.querySelectorAll(".snake-unit");
+const removerSerpiente = (divSelector,lugar) =>{
+    let remove = divSelector.querySelectorAll(".snake-unit");
         for (let i = 0; i < remove.length; i++) {
-            gameBoard.removeChild(remove[i]);
+            divSelector.removeChild(remove[i]);
         }
-        remove = gameBoard.querySelectorAll(".food");
-        gameBoard.removeChild(remove[0]);           
+    if (lugar = "Tablero") {
+        snake = [];
+    }
+}
+const removerComida = () => {
+    remove = gameBoard.querySelectorAll(".food");
+    gameBoard.removeChild(remove[0]);  
+}
+const desaparecerTablero = (bool) => {
+    if (bool == true) {
         gameBoard.style.zIndex = "0";
         menu.style.display = "";
-        clearInterval(game);
-        startGame = false;
-        puntuacionDiv = document.getElementById("puntuacion");
-        puntuacionDiv.innerHTML = "Puntuacion: " + puntuacion + "<br> Dificultad: " + difficulty ;
-        snake = [];
-        startMenu();
-
     }else{
-    let food = document.querySelector(".food");
+        gameBoard.style.zIndex = "1";
+        menu.style.display = "none";
+    }
+    
+}
+const musicMenuPlay = () => {
+    musicSelect = Math.trunc(Math.random()*3 + 1);
+    musicMenu.src = "sounds/menuMusic"+musicSelect+".mp3";
+    musicMenu.currentTime = 0;
+    musicMenu.play();
+    musicMenu.volume = soundSwich;
+}
+const gameOver = () => {
+    startGame = false;
+    movement = "rigth";
+    if (ultimPuntuacion < puntuacion) {
+        ultimPuntuacion = puntuacion;
+    }
+    music.pause();
+    music.currentTime = 0;
+    puntuacion = 0;
+    removerSerpiente(gameBoard,"Tablero");   
+    removerComida();      
+    desaparecerTablero(true);
+    clearInterval(game);
+    musicMenuPlay();
+    startMenu();
+    puntuacionDiv = document.getElementById("puntuacion");
+    puntuacionDiv.innerHTML = "Puntuacion: " + puntuacion + "<br> Dificultad: " + difficulty ;
+}
+const moverSerpiente = () => {
+    if (choque(snake,400) == true){
+        gameOver();
+    }else{
+    tecla();
     let HeadX = snake[0].offsetLeft;
     let HeadY = snake[0].offsetTop;
     let newX;
@@ -141,23 +161,30 @@ const moverSerpiente = () => {
         HeadX = newX;
         HeadY = newY;
     }
+    eating();
+    canMove = true;
+}
+}
+const eating = () =>{
+    let food = document.querySelector(".food");
     if (snake[0].offsetLeft == food.offsetLeft && snake[0].offsetTop == food.offsetTop) { //Para cuando come :3
-        aumentarPuntuacion();
-        gameBoard.removeChild(food);
-        const comer = new Audio("sounds/eat.mp3");
+        aumentarPuntuacion();//Aumenta Puntuacion
+        removerComida();//Remueve la comida
+
+        const comer = new Audio("sounds/eat.mp3");//Reproduce audio eat
         comer.volume = 0.4;
         comer.play();
-        let snakeUnit = document.createElement("div");
+
+        let snakeUnit = document.createElement("div");//Aumenta el tamaño de la serpiente
         snakeUnit.classList.add("snake-unit");
         snakeUnit.style.left = snake[snake.length - 1].offsetLeft + "px";
         snakeUnit.style.top = snake[snake.length - 1].offsetTop + "px";
         snake.push(snakeUnit);
         gameBoard.appendChild(snakeUnit);
-        comida();
+
+        comida(); //Crea una nueva comida
     }
 }
-}
-
 const aumentarPuntuacion = () =>{
     difficulty = dificultad(puntuacion);
     puntuacion += 1;
@@ -165,7 +192,6 @@ const aumentarPuntuacion = () =>{
     puntuacionDiv.innerHTML = `Puntuacion: ${puntuacion}<br> Dificultad: ${difficulty}` ;
     
 }
-//Funcion para empezar el juego
 function start(){
     difficulty = dificultad(puntuacion);
     let puntuacionDiv = document.getElementById("puntuacion");
@@ -174,29 +200,46 @@ function start(){
     iniciarSerpiente();
     comida();
 }
-document.addEventListener("keydown",function(event){
-    if (event.keyCode == 38) {
-        if (movement != "down"){
-            movement = "up"
-        }
-    }
-    if (event.keyCode == 37) {
-        if (movement != "rigth") {
-            movement = "left"
-        }
-    }
-    if (event.keyCode == 39) {
-        if (movement != "left") {
-            movement = "rigth"
-        }
-    }
-    if (event.keyCode == 40) {
-        if (movement != "up") {
-            movement = "down"
-        }
-    }
-    });
+const tecla = () =>{
+    document.addEventListener("keydown",function(event){
+        if (canMove == true){
+            switch (event.keyCode) {
+                case 38:
+                    if (movement != "down"){
+                        movement = "up"
+                    }
+                    break;
+                case 37:
+                    if (movement != "rigth") {
+                        movement = "left"
+                    }
+                    break;
+                case 39:
+                    if (movement != "left") {
+                        movement = "rigth"
+                    }
+                    break;
+                case 40:
+                    if (movement != "up") {
+                        movement = "down"
+                    }
+                    break;  
+                default:
+                    break;
+                
+            }
+        }   
+        canMove = false;
+        });
+}
 
+
+
+
+
+
+let movementBot = "rigth";
+let snakeMenu = [];
 const iniciarSerpienteMenu = () => { 
     for (let i = 0; i < 5; i++) {
         let snakeUnit = document.createElement("div");
@@ -275,8 +318,10 @@ const serpienteRandom = () => {
     
 }
 function startMenu(){
+    buttonSound.style.backgroundImage = "url('imagen/sin-sonido.png')";
+    buttonSound.style.backgroundSize = "contain";
     let ultPuntuacion = menu.querySelector(".lastPuntuacion");
-    ultPuntuacion.innerHTML = "Ultima Puntuacion: " + ultimPuntuacion;
+    ultPuntuacion.innerHTML = "Mejor Puntuacion: " + ultimPuntuacion;
     if (startGame==false) {
         iniciarSerpienteMenu();
         gameMenu = setInterval(serpienteRandom,300);
@@ -287,9 +332,7 @@ musicMenu.addEventListener("ended",function(){
     musicMenu.currentTime = 0;
     musicMenu.play();
 })
-
 button.onclick = function(){
-    console.log(soundSwich);
     musicMenu.pause();
     musicMenu.currentTime = 0;
     if (soundSwich == 0){
@@ -301,16 +344,11 @@ button.onclick = function(){
     music.play();
     clearInterval(gameMenu);
     startGame = true;
-    gameBoard.style.zIndex = "2";
-    menu.style.display = "none";
-    movement = "rigth"; 
-    let remove = display.querySelectorAll(".snake-unit");
-    for (let i = 0; i < remove.length; i++) {
-        display.removeChild(remove[i]);
-    }   
+    desaparecerTablero(false); 
+    removerSerpiente(display,"Menu");
+    canMove = false;
     start();
 };
-
 buttonSound.onclick = function(){
     if (soundSwich == 0){
         soundSwich = 0.03;
@@ -362,10 +400,6 @@ window.addEventListener("focus", function() {
     musicMenu.play();
 });
 
-
-
-buttonSound.style.backgroundImage = "url('imagen/sin-sonido.png')";
-buttonSound.style.backgroundSize = "contain";
 startMenu();
 
 
