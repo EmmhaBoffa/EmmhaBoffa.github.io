@@ -5,13 +5,14 @@
 
 body{
   background-color: #e17572;
+  margin: 0px;
+  padding: 0px;
 }
 #container{
   position: relative;
   width: 400px;
   height: 400px;
   margin: auto;
-  padding-top: 15vh;
 }
 .lastPuntuacion{
   position: relative;
@@ -68,11 +69,12 @@ body{
   animation-direction: normal;
 }
 #game-board {
+    position: fixed;
     width: 400px;
     height: 400px;
     border: 1px solid black;
     position: absolute;
-    margin: auto;
+    top: 0;
     background-color: #2b0b16;
     z-index: 0;
     color: #fff;
@@ -98,6 +100,9 @@ body{
   }
 
   #menu{
+    position: fixed;
+    top: 0;
+    left: auto;
     border-radius: 3px;
     position: absolute;
     width: 410px;
@@ -164,17 +169,19 @@ body{
   display: none;
 }
 @media only screen and (max-width: 500px){
-  #container{
-    top: -93px;
-    margin: auto;
-    left: -10px;
+  .controlDiv{
+    min-width: 200px;
+    min-height: 200px;
+    max-height: 300px;
+    border: floralwhite;
+    margin: 0px;
+    padding: 0px;
   }
   .control{
     display: inline-block;
     position: fixed;
     height: 100px;
     width: 100px;
-    border: 2px solid #fff;
     margin: 0px;
     padding: 0px;
     border: 0px solid;
@@ -184,23 +191,24 @@ body{
     background-repeat: no-repeat;
   }
   .up{
-    bottom: 38%;
-    right: 40%;
+    
+    top: 1;
+    right: 45%;
     background-image: url(imagen/up.png);
   }
   .down{
-    bottom: 10%;
-    right: 40%;
+    bottom: 0;
+    right: 45%;
     background-image: url(imagen/down.png);
   }
   .left{
-    bottom: 25%;
+    bottom: 20%;
     left: 0;
     background-image: url(imagen/left.png);
   }
   .rigth{
-    bottom: 25%;
-    right: 0;
+    bottom: 20%;
+    right: 5%;
     background-image: url(imagen/rigth.png);
   }
 }
