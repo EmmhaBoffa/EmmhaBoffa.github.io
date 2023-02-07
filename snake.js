@@ -1,3 +1,13 @@
+// ||||||||||||JUEGO DE SNAKE|||||||||||
+// ||||||||||BY: EMANUEL BOFFADOSSI|||||
+// |||||||||||||||||||||||||||||||||||||
+// ||||||  ||||||||||||||||||  |||||||||
+// |||||||||||||||||||||||||||||||||||||
+// ||||||  ||||||||||||||||||  |||||||||
+// ||||||||                  |||||||||||
+//||||||||||||||||||||||||||||||||||||||
+
+//||||||||||||||||||||||||||VARIABLES GLOBALES|||||||||||||||||||//
 const gameBoard = document.getElementById("game-board");
 const display = document.querySelector(".display");
 const menu = document.getElementById("menu");
@@ -16,7 +26,7 @@ let difficulty;
 let puntuacion = 0;
 let soundSwich = 0;
 
-
+//|||||||||||||||||||||||||||| CODIGO PRINCIPAL JUEGO ||||||||||||||||||||||||||//
 const dificultad = (puntuacion) => {
     if (puntuacion < 4) {
         return 1;
@@ -33,17 +43,17 @@ const dificultad = (puntuacion) => {
     }
     if (puntuacion < 40 && puntuacion >= 30) {
         clearInterval(game);
-        game = setInterval(moverSerpiente,75);
+        game = setInterval(moverSerpiente,95);
         return 4;
     }
     if (puntuacion >= 40 && puntuacion < 50) {
         clearInterval(game);
-        game = setInterval(moverSerpiente,69);
+        game = setInterval(moverSerpiente,86);
         return 5;
     }
     if (puntuacion >= 50) {
         clearInterval(game);
-        game = setInterval(moverSerpiente,55);
+        game = setInterval(moverSerpiente,80);
         return 6;
     }
 }
@@ -83,12 +93,14 @@ const choque = (snake,medida) =>{
     }
     return false;
 }
-const removerSerpiente = (divSelector,lugar) =>{
+const removerSerpiente = (divSelector,lugar) =>{     
     let remove = divSelector.querySelectorAll(".snake-unit");
-        for (let i = 0; i < remove.length; i++) {
-            divSelector.removeChild(remove[i]);
-        }
-    if (lugar = "Tablero") {
+    for (let index = 0; index < remove.length; index++) {
+        divSelector.removeChild(remove[index]); 
+    }    
+    
+    if (lugar == "Tablero") {
+        
         snake = [];
     }
 }
@@ -114,6 +126,7 @@ const musicMenuPlay = () => {
     musicMenu.volume = soundSwich;
 }
 const gameOver = () => {
+    console.log("game over");
     startGame = false;
     movement = "rigth";
     if (ultimPuntuacion < puntuacion) {
@@ -131,9 +144,64 @@ const gameOver = () => {
     puntuacionDiv = document.getElementById("puntuacion");
     puntuacionDiv.innerHTML = "Puntuacion: " + puntuacion + "<br> Dificultad: " + difficulty ;
 }
+let time = 700;
+const animacion = (index) =>{
+    
+    if (index >= snake.length){
+        gameOver();
+    }else{
+    const dead1= new Audio(`sounds/dead.mp3`);
+    const dead2= new Audio(`sounds/dead2.mp3`);
+    const dead3= new Audio(`sounds/dead3.mp3`);
+    const dead4= new Audio(`sounds/dead4.mp3`);
+    const dead5= new Audio(`sounds/dead5.mp3`);
+    switch (index) {
+        case 0:
+            // particle = document.createElement("div")
+            // particle.classList.add("particle");
+            // particle.style.left = snake[0].offsetLeft + "px";
+            // particle.style.top = snake[0].offsetTop + 2 + "px";
+            // gameBoard.appendChild(particle);
+            
+            dead1.play(); 
+            break;
+        case 1:
+            dead2.play(); 
+        break;
+        case 2:
+            dead3.play(); 
+        break;
+        case 3:
+            dead4.play(); 
+        break;
+        case 5:
+            dead5.play(); 
+        break;
+    
+        default:
+            dead5.play();
+            break;
+    }
+    
+      
+    snake[(snake.length-1)-index].style.display = "none";
+
+    if (time > 200){
+        time = time-100
+    }
+
+    setTimeout(() => {
+        animacion(index + 1)
+    }, time);
+    }
+    
+    
+}
 const moverSerpiente = () => {
     if (choque(snake,400) == true){
-        gameOver();
+        music.pause();
+        clearInterval(game);
+        animacion(0);
     }else{
     tecla();
     let HeadX = snake[0].offsetLeft;
@@ -236,7 +304,7 @@ const tecla = () =>{
 
 
 
-
+// ||||||||||||||||||| MENU DEL JUEGO |||||||||||||||||||||||||||//
 
 let movementBot = "rigth";
 let snakeMenu = [];
@@ -317,9 +385,9 @@ const serpienteRandom = () => {
     
     
 }
+buttonSound.style.backgroundImage = "url('imagen/sin-sonido.png')";
+buttonSound.style.backgroundSize = "contain";
 function startMenu(){
-    buttonSound.style.backgroundImage = "url('imagen/sin-sonido.png')";
-    buttonSound.style.backgroundSize = "contain";
     let ultPuntuacion = menu.querySelector(".lastPuntuacion");
     ultPuntuacion.innerHTML = "Mejor Puntuacion: " + ultimPuntuacion;
     if (startGame==false) {
@@ -367,6 +435,11 @@ buttonSound.onclick = function(){
     
 };
 
+
+//||||||||||||| CONTROLES MOVILES |||||||||||||||||||||||||//
+
+
+
 let up = document.querySelector(".up");
 let down = document.querySelector(".down");
 let left = document.querySelector(".left");
@@ -397,7 +470,10 @@ document.addEventListener("blur", function() {
     musicMenu.pause();
   });
 window.addEventListener("focus", function() {
-    musicMenu.play();
+    if(startGame == false){
+        musicMenu.play();
+    }
+    
 });
 
 startMenu();

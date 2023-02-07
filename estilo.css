@@ -2,7 +2,22 @@
   font-family: Game;
   src: url(fonts/GAME.ttf);
 }
-
+.particle{
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  animation: particula;
+  background-color: #4BE661;
+  animation-duration: 2s;
+}
+@keyframes particula {
+  0%{
+    
+  }
+  100%{
+    transform: translate(-10px,-10px);
+  }
+}
 body{
   background-color: #e17572;
   margin: 0px;
