@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const videoSource = document.getElementById('videoSource');
   
     const videos = [
-      '//emmha/Users/Public/Scripts/Videos1.mp4',
-      '//emmha/Users/Public/Scripts/Videos2.mp4',
-      '//emmha/Users/Public/Scripts/Videos3.mp4'
+      'imagen/Videos1.mp4/Videos1.mp4',
+      'imagen/Videos1.mp4/Videos2.mp4',
+      'imagen/Videos1.mp4/Videos3.mp4'
     ];
   
     let currentVideoIndex = 0;
