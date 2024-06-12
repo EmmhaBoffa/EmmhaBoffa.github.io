@@ -21,8 +21,10 @@ document.addEventListener("DOMContentLoaded", function() {
     videoElement.addEventListener('ended', playNextVideo);
 
     startButton.addEventListener('click', function() {
+      startButton.style.display = 'none'; // Ocultar el botón
       videoElement.play();
     });
   });
+
 
   
