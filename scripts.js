@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const videoElement = document.getElementById('myVideo');
     const videoSource = document.getElementById('videoSource');
+    const startButton = document.getElementById('startButton');
   
     const videos = [
       'imagen/Videos1.mp4',
@@ -9,12 +10,19 @@ document.addEventListener("DOMContentLoaded", function() {
     ];
   
     let currentVideoIndex = 0;
-  
-    videoElement.addEventListener('ended', () => {
+
+    function playNextVideo() {
       currentVideoIndex = (currentVideoIndex + 1) % videos.length;
       videoSource.src = videos[currentVideoIndex];
       videoElement.load();
       videoElement.play();
+    }
+  
+    videoElement.addEventListener('ended', playNextVideo);
+
+    startButton.addEventListener('click', function() {
+      videoElement.play();
     });
   });
+
   
