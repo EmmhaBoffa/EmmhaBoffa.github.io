@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Regalo de Navidad</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .gift-box {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.05);
+        }
+
+        .gift-box.shake {
+            animation: shakeBox 0.5s infinite;
+        }
+
+        @keyframes shakeBox {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-5deg); }
+            75% { transform: translateX(5px) rotate(5deg); }
+        }
+
+        .lid {
+            position: absolute;
+            width: 180px;
+            height: 40px;
+            background: #ff0000;
+            top: 0;
+            left: 10px;
+            z-index: 2;
+            transition: transform 1s ease;
+        }
+
+        .lid::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 100%;
+            background: #cc0000;
+            left: 75px;
+        }
+
+        .box {
+            position: absolute;
+            width: 180px;
+            height: 160px;
+            background: #ff0000;
+            top: 40px;
+            left: 10px;
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 100%;
+            background: #cc0000;
+            left: 75px;
+        }
+
+        .gift-box.opened .lid {
+            transform: translateY(-60px) rotateX(60deg);
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            z-index: 3;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            80% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .snow {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-10vh);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .countdown {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: white;
+            display: none;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    <div class="countdown" id="countdown"></div>
+    <div class="gift-box" onclick="startSequence()">
+        <div class="lid"></div>
+        <div class="box"></div>
+    </div>
+    <div class="message" id="message">
+        <h2>¡Felicidades! tu amigo invisible es: 🎄</h2>
+        <h1>🥳Yamila🥳.</h1>
+        <p>¡Suerte elijiendo tu regalo!</p>
+        <p>¡No le digas a nadie!</p>
+    </div>
+
+    <audio id="drumroll" src="https://emmhaboffa.github.io/effect1.mp3"></audio>
+    <audio id="fireworks" src="https://emmhaboffa.github.io/effect2.mp3"></audio>
+
+    <script>
+        let canClick = true;
+
+        function startSequence() {
+            if (!canClick) return;
+            canClick = false;
+            
+            const giftBox = document.querySelector('.gift-box');
+            const message = document.getElementById('message');
+            const overlay = document.getElementById('overlay');
+            const countdown = document.getElementById('countdown');
+            const drumroll = document.getElementById('drumroll');
+            const fireworks = document.getElementById('fireworks');
+
+            overlay.style.display = 'block';
+            countdown.style.display = 'block';
+            giftBox.classList.add('shake');
+            
+            // Reproducir redoble
+            drumroll.play();
+
+            // Cuenta regresiva
+            let count = 3;
+            countdown.textContent = count;
+
+            const countInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdown.textContent = count;
+                } else {
+                    clearInterval(countInterval);
+                    countdown.style.display = 'none';
+                    overlay.style.display = 'none';
+                    giftBox.classList.remove('shake');
+                    
+                    // Abrir la caja
+                    giftBox.classList.add('opened');
+
+                    // Reproducir sonido de fuegos artificiales
+                    fireworks.play();
+                    
+                    // Mostrar mensaje
+                    setTimeout(() => {
+                        message.style.display = 'block';
+                        canClick = true;
+                    }, 1000);
+                }
+            }, 1000);
+        }
+
+        // Crear copos de nieve
+        // Crear copos de nieve
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.classList.add('snow');
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.top = '-10px';
+            snow.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), 5000);
+        }
+
+        // Generar nieve continuamente
+        setInterval(createSnow, 100);
+    </script>
+</body>
+</html>
