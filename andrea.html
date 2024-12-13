@@ -162,6 +162,7 @@
     </div>
 
     <audio id="drumroll" src="https://emmhaboffa.github.io/effect1.mp3"></audio>
+    <audio id="fireworks" src="https://emmhaboffa.github.io/effect2.mp3"></audio>
 
     <script>
         let canClick = true;
@@ -175,6 +176,7 @@
             const overlay = document.getElementById('overlay');
             const countdown = document.getElementById('countdown');
             const drumroll = document.getElementById('drumroll');
+            const fireworks = document.getElementById('fireworks');
 
             overlay.style.display = 'block';
             countdown.style.display = 'block';
@@ -199,6 +201,9 @@
                     
                     // Abrir la caja
                     giftBox.classList.add('opened');
+
+                    // Reproducir sonido de fuegos artificiales
+                    fireworks.play();
                     
                     // Mostrar mensaje
                     setTimeout(() => {
