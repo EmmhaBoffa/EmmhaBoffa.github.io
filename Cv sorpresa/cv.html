@@ -41,10 +41,11 @@
             background-color: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
             position: relative;
         }
-        
+        #personal-info{
+            text-align: left;
+        }
         .header {
             text-align: center;
             padding-bottom: 20px;
@@ -103,16 +104,21 @@
             padding-bottom: 5px;
         }
         
-        .virtudes { background-color: #e8f4f8; }
+        .virtudes .defects{ 
+            background-color: #e8f4f8;
+            flex: 1; /* Cada div ocupa el mismo ancho */
+        }
+        .section.virtudes{
+            display: flex; /* Activa Flexbox */
+            flex-direction: row; /* Pone los elementos en fila */
+            flex-direction: row; /* Pone los elementos en fila */
+        }
         .experiencia { background-color: #f8f2e8; }
         .educacion { background-color: #f8e8e8; }
         .habilidades { background-color: #e8f8e8; }
         .virtudes-container {
-            min-height: 150px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
             padding: 10px;
         }
 
@@ -134,28 +140,22 @@
         }
 
         .virtue-trigger {
-            background-color: #000000;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
             cursor: pointer;
             display: inline-block;
             transition: all 0.3s ease;
+            flex: 1;
+            padding: 14px;
         }
 
         .virtue-trigger:hover {
             transform: scale(1.05);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
         .defects-trigger {
-            background-color: #e74c3c;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
             display: inline-block;
             transition: all 0.3s ease;
             margin-bottom: 10px;
+            flex: 1;
+            padding: 14px;
         }
 
         .defects-trigger:hover {
@@ -180,8 +180,36 @@
             height: 100%;
             object-fit: cover;
         }
+        #virtuesContainer {
+        display: flex; /* Flexbox para fácil alineación */
+        align-items: flex-start; /* Alinea al inicio verticalmente */
+        justify-content: flex-start; /* Alinea al inicio horizontalmente */
+        padding: 10px; /* Espaciado interno para que no toque los bordes */
+        text-align: left; /* Asegura que el texto dentro también esté alineado a la izquierda */
+        }
+        .cv-container {
+    display: flex; /* Activa Flexbox */
+    flex-direction: row; /* Alinea los elementos en fila */
+    justify-content: space-between; /* Espacio igual entre los elementos */
+    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
+    gap: 20px; /* Espacio entre los divs */
+    padding: 20px;
+}
+
+.header, .virtudes, .defectos {
+    flex: 1; /* Hace que cada div ocupe el mismo ancho */
+    padding: 0px;
+    box-sizing: border-box; /* Incluye padding dentro del ancho */
+    margin: 0;
+    background-color: white;
+}
+.defects-video-container{
+    flex: 1;
+}
     </style>
 </head>
+
+
 <body>
     <div class="cv-container">
         <div class="header">
@@ -190,21 +218,31 @@
                 <video id="profileVideo" src="video.mp4"></video>
             </div>
             <div class="hidden-name" id="hiddenName">
-                <h1>Emanuel</h1>
+                <h1>Emanuel Boffadossi</h1>
             </div>
-            <p>CUÑADO</p>
+            <p id="personal-info">
+            <b>Edad</b>: 24<br>
+            <b>Direccion:</b> Rio Cuato Frenc 1350<br>
+            <b>Experiencia como cuñado:</b> 3 años<br>
+            </p>
             <audio id="revealSound" src="reveal.mp3"></audio>
         </div>
-
-        <!-- ... Resto de las secciones igual ... -->
     </div>
     <div class="section virtudes">
-        <h2>Virtudes</h2>
-        <div class="virtue-trigger" id="virtueTrigger">Click acá para ver</div>
-        <div class="virtudes-container" id="virtuesContainer"></div>
-        <audio id="guapo" src="guapo.mp3"></audio>
-    </div>
+        <div class="virtue-trigger" id="virtueTrigger">
+            <h2>Descripcion</h2>
+            Click acá para ver
 
+        </div>
+        <audio id="guapo" src="guapo.mp3"></audio>
+        <div class="defects-trigger" id="defectsTrigger">
+            <h2>Defectos</h2>
+            Click acá para ver
+        </div>
+        <div class="defects-video-container" id="defectsVideoContainer">
+        <video class="defects-video" id="defectsVideo" src="defectos.mp4"></video>
+        </div>
+    </div>
     <script>
         // Código anterior del video
         const profileContainer = document.getElementById('profileContainer');
@@ -256,65 +294,44 @@
     <script>
     // Nuevo código para las virtudes
     const virtues = [
-        "Guapo",
-        "poderoso",
-        "asombroso",
-        "Muy hermoso",
-        "soy precioso",
-        "armonioso",
-        "Un buen socio",
-        "misterioso",
-        "buena gente",
-        "Detergente",
-        "muy majete",
-        "inteligente",
-        "Nada ojete",
-        "irreverente",
-        "un exponente",
-        "Muy perfecto es lo que soy"
+        "Guapo, ",
+        "poderoso,",
+        "asombroso,",
+        "muy hermoso,",
+        "soy precioso,",
+        "armonioso,",
+        "un buen socio,",
+        "misterioso,",
+        "buena gente,",
+        "detergente,",
+        "muy majete,",
+        "inteligente,",
+        "nada ojete,",
+        "irreverente,",
+        "un exponente,",
+        "muy perfecto es lo que soy"
     ];
 
     const virtueTrigger = document.getElementById('virtueTrigger');
     const virtuesContainer = document.getElementById('virtuesContainer');
     let hasBeenTriggered = false;
 
-    function createVirtueElement(virtue) {
-        const virtueEl = document.createElement('span');
-        virtueEl.className = 'virtue-word';
-        virtueEl.textContent = virtue;
-        return virtueEl;
-    }
-
-    function showVirtues() {
-        if (hasBeenTriggered) return;
-        guapo.play()
-        hasBeenTriggered = true;
-        virtueTrigger.style.display = 'none';
-        
-        virtues.forEach((virtue, index) => {
-            const virtueEl = createVirtueElement(virtue);
-            virtuesContainer.appendChild(virtueEl);
-            
-            setTimeout(() => {
-                virtueEl.classList.add('visible');
-            }, index * 1000); // 1 segundo de retraso entre cada palabra
-        });
-    }
-
-    virtueTrigger.addEventListener('click', showVirtues);
+    function displayVirtuesWithDelay() {  
+    if (hasBeenTriggered) return
+    guapo.play()
+    hasBeenTriggered = true;
+    let text = "";
+    virtues.forEach((virtue, index) => {
+        setTimeout(() => {
+            text += (index === 0 ? "" : " ") + virtue; // Agrega espacio si no es la primera palabra
+            virtueTrigger.innerHTML = `<p>${text}</p>`;  // Actualiza el contenido del div
+        }, index * 1000);
+    });
+}
+    virtueTrigger.addEventListener('click', displayVirtuesWithDelay);
 
 </script>
-<div class="section defectos">
-    <h2>Defectos</h2>
-    <div class="defects-trigger" id="defectsTrigger">Click acá para ver</div>
-    <div class="defects-video-container" id="defectsVideoContainer">
-        <video class="defects-video" id="defectsVideo" src="defectos.mp4"></video>
-    </div>
-</div>
 <script>
-    // ... Código anterior del video de perfil y nombre ...
-
-    // Código para el video de defectos
     const defectsTrigger = document.getElementById('defectsTrigger');
     const defectsVideo = document.getElementById('defectsVideo');
     const defectsVideoContainer = document.getElementById('defectsVideoContainer');
@@ -330,14 +347,12 @@
     });
 
     defectsVideo.addEventListener('ended', () => {
-        // Si quieres que el video desaparezca al terminar, descomenta la siguiente línea
         // defectsVideoContainer.style.display = 'none';
         
         // Si quieres que el video vuelva a su frame inicial, descomenta la siguiente línea
         // defectsVideo.currentTime = 0;
     });
 
-    // ... Resto del código anterior ...
 </script>
 </body>
 </html>
