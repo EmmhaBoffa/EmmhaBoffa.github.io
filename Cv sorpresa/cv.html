@@ -206,6 +206,9 @@
 .defects-video-container{
     flex: 1;
 }
+.p-favorite{
+    text-align: left;
+}
     </style>
 </head>
 
@@ -225,7 +228,11 @@
             <b>Direccion:</b> Rio Cuato Frenc 1350<br>
             <b>Experiencia como cuñado:</b> 3 años<br>
             </p>
+            <p class="p-favorite">
+                <b>Cuñada favorita: <b class="favorite" id="favorite-cu">?</b></b>
+            </p>
             <audio id="revealSound" src="reveal.mp3"></audio>
+            <audio id="ruleta" src="ruleta.mp3"></audio>
         </div>
     </div>
     <div class="section virtudes">
@@ -241,6 +248,9 @@
         </div>
         <div class="defects-video-container" id="defectsVideoContainer">
         <video class="defects-video" id="defectsVideo" src="defectos.mp4"></video>
+        </div>
+        <div>
+            
         </div>
     </div>
     <script>
@@ -329,6 +339,58 @@
     });
 }
     virtueTrigger.addEventListener('click', displayVirtuesWithDelay);
+
+</script>
+<script>
+    const ruleta = document.getElementById('ruleta');
+    const TextCu = document.getElementById('favorite-cu');
+    let clickCu = false;
+    const cuñis = [
+        "Viky",
+        "Cami",
+        "Cele",
+        "Martin",
+    ]
+
+    TextCu.addEventListener('click', () => {
+        if (!clickCu) {
+            clickCu = true;
+            let repeat = 0;
+            ruleta.play()
+            iterarCuñis();
+        }
+    });
+
+const iteraciones = 23; // Número de ciclos
+const tiempoInicial = 10; // Tiempo inicial en ms
+const factorReduccion = 1.02; // Factor para reducir el tiempo
+function iterarCuñis() {
+    let paso = 0;
+    let tiempoActual = tiempoInicial;
+
+    function mostrarItem() {
+        // Calcular el índice actual
+        const index = Math.floor(Math.random() * cuñis.length);
+        TextCu.innerText = cuñis[index];
+        console.log(`Mostrando: ${cuñis[index]} (Paso ${paso + 1})`);
+
+        // Incrementar el paso y verificar si terminamos
+        paso++;
+        if (paso >= iteraciones * cuñis.length) {
+            return; // Terminar si alcanzamos el total de iteraciones
+        }
+
+        // Reducir el tiempo y programar el siguiente item
+        tiempoActual = tiempoActual * factorReduccion;
+        setTimeout(mostrarItem, tiempoActual);
+        console.log(tiempoActual)
+    }
+
+    // Iniciar la primera iteración
+    mostrarItem();
+}
+
+
 
 </script>
 <script>
