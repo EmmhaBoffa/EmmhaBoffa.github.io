@@ -350,6 +350,7 @@
             function mostrarItem() {
                 const index = Math.floor(Math.random() * cuñis.length);
                 TextCu.innerText = cuñis[index];
+                TextCu.style.fontSize = '12px'
                 paso++;
                 if (paso >= iteraciones * cuñis.length) {
                     return;
@@ -440,9 +441,9 @@ ofertContainer.addEventListener('click', () => {
         function agregarhabilidad() {
     if (indexh <= 23) {
         click.play();
+        phabilities.style.fontSize = '12px'
         const nuevoTexto = document.createTextNode(habilidades[indexh]);
         phabilities.appendChild(nuevoTexto); // Agregar solo el nuevo texto
-        phabilities.style.fontSize = '12px'
         indexh++;
     }
     if (indexh > 23) {
