@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Interactivo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .cv-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            min-height: 1000px;
+        }
+
+        .left-column {
+            border-right: 2px solid #eee;
+            padding-right: 20px;
+            background-color: rgb(64, 150, 219);
+            padding: 10px;
+            color: white;
+        }
+
+        .right-column {
+            padding-left: 20px;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative; /* Añadido para posicionamiento del video */
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative; /* Añadido para z-index */
+            z-index: 1; /* Asegura que esté por encima del video cuando es visible */
+        }
+
+        #profileVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            z-index: 0;
+        }
+
+        .hidden-name {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .hidden-name.revealed {
+            background: transparent;
+            color: white;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            color: white;
+            margin: 10px 0;
+            font-size: 24px;
+        }
+
+        h2 {
+            color: #3498db;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        p {
+            font-size: 15px;
+        }
+
+        .personal-info {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .virtues-section, .defects-section, .ofert-container {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .virtues-section:hover, .defects-section:hover, .ofert-container:hover {
+            background-color: #f0f0f0;
+        }
+
+        .defects-video-container{
+            width: 100%;
+            height: 200px;
+            max-width: 600px;
+            margin: 20px auto;
+            display: none;
+            position: relative;
+            aspect-ratio: 16/9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .defects-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .favorite-section {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgb(64, 150, 219);
+            border-radius: 5px;
+            color: white;
+
+        }
+        .favorite-section, .habilities{
+            margin: 0px;
+            padding: 0px;
+        }
+        .ofert-container-items {
+            display: flex;
+            flex-wrap: nowrap; /* Para que las imágenes se mantengan en una línea */
+            gap: 10px;
+            justify-content: flex-start; /* Alineación a la izquierda */
+            margin-top: 20px;
+        }
+        .ofert-image {
+            width: 80px;
+            height: 80px;
+            opacity: 0;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+        .ofert-image.visible {
+            opacity: 1;
+        }
+        .ofert-container{
+            z-index: 1;
+        }
+        #b-habilities{
+            z-index: 10;
+            max-width: 150px;
+            color: black;
+            font-size: 15px;
+        }
+        #bu{
+            display: none;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <video id="bu" src="bu.mp4"></video>
+    <div class="cv-container" id="cv-container">
+        <div class="left-column">
+            <div class="profile-section">
+                <div class="profile-container" id="profileContainer">
+                    <img src="Foto.png" alt="Foto de perfil" class="profile-pic" id="profilePic">
+                    <video id="profileVideo" src="video.mp4"></video>
+                </div>
+                <div class="hidden-name" id="hiddenName">
+                    <h1>Emanuel Boffadossi</h1>
+                </div>
+            </div>
+            <div class="personal-info" id="personal-info">
+                <p><b>Edad:</b> 24</p>
+                <p><b>Dirección:</b> Rio Cuato French 1350</p>
+                <p><b>Experiencia como cuñado:</b> 3 años</p>
+                <p><b>Contacto:</b> 3584385263s</p>
+                <div class="favorite-section">
+                <p><b>Cuñada/o favorita: <b class="favorite" id="favorite-cu">?</b></b></p>
+                </div>
+                <div class="habilities" id="habilities-id-div">
+                <b>Habilidades:</b>
+                <p><b id="b-habilities"></b></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-column">
+            <div class="section virtues-section" id="virtueTrigger">
+                <h2>Descripción</h2>
+                <p>Click acá para ver</p>
+            </div>
+
+            <div class="section defects-section" id="defectsTrigger">
+                <h2>Defectos</h2>
+                <p>Click acá para ver</p>
+                <div class="defects-video-container" id="defectsVideoContainer">
+                    <video class="defects-video" id="defectsVideo" src="defectos.mp4"></video>
+                </div>
+            </div>
+            <div class="section ofert-container" id="ofert-container">
+                <h2>Que ofrezco</h2>
+                <p>Click acá para ver</p>
+                <div class="ofert-container-items" id="ofert-container-items">
+                    <img src="images/1.jpg" alt="Oferta 1" class="ofert-image">
+                    <img src="images/2.jpg" alt="Oferta 2" class="ofert-image">
+                    <img src="images/3.jpg" alt="Oferta 3" class="ofert-image">
+                    <img src="images/4.jpg" alt="Oferta 4" class="ofert-image">
+                    <img src="images/5.jpg" alt="Oferta 5" class="ofert-image">
+                    <img src="images/6.jpg" alt="Oferta 6" class="ofert-image">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <audio id="revealSound" src="reveal.mp3"></audio>
+    <audio id="ruleta" src="ruleta.mp3"></audio>
+    <audio id="guapo" src="guapo.mp3"></audio>
+    <audio id="estufa" src="estufa.mp3"></audio>
+    <audio id="click" src="click.mp3"></audio>
+
+    <script>
+        // Código del perfil mejorado
+        const profileContainer = document.getElementById('profileContainer');
+        const profilePic = document.getElementById('profilePic');
+        const video = document.getElementById('profileVideo');
+
+        profileContainer.addEventListener('click', () => {
+            profilePic.style.display = 'none';
+            video.style.display = 'block';
+            video.play();
+            
+            video.addEventListener('ended', () => {
+                video.style.display = 'none';
+                profilePic.style.display = 'block';
+                video.pause();
+                video.currentTime = 0;
+            }, { once: true });
+        });
+
+        const hiddenName = document.getElementById('hiddenName');
+        const revealSound = document.getElementById('revealSound');
+        let isRevealed = false;
+
+        function triggerConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        hiddenName.addEventListener('click', () => {
+            if (!isRevealed) {
+                isRevealed = true;
+                hiddenName.classList.add('revealed');
+                revealSound.play();
+                triggerConfetti();
+            }
+        });
+
+        const virtues = [
+            "Guapo, ",
+            "poderoso,",
+            "asombroso,",
+            "muy hermoso,",
+            "soy precioso,",
+            "armonioso,",
+            "un buen socio,",
+            "misterioso,",
+            "buena gente,",
+            "detergente,",
+            "muy majete,",
+            "inteligente,",
+            "nada ojete,",
+            "irreverente,",
+            "un exponente,",
+            "muy perfecto es lo que soy"
+        ];
+
+        const virtueTrigger = document.getElementById('virtueTrigger');
+        let hasBeenTriggered = false;
+
+        function displayVirtuesWithDelay() {  
+            if (hasBeenTriggered) return;
+            guapo.play();
+            hasBeenTriggered = true;
+            let text = "";
+            virtues.forEach((virtue, index) => {
+                setTimeout(() => {
+                    text += (index === 0 ? "" : " ") + virtue;
+                    virtueTrigger.innerHTML = `<h2>Descripción</h2><p>${text}</p>`;
+                }, index * 1000);
+            });
+        }
+        virtueTrigger.addEventListener('click', displayVirtuesWithDelay);
+
+        const ruleta = document.getElementById('ruleta');
+        const TextCu = document.getElementById('favorite-cu');
+        let clickCu = false;
+        const cuñis = ["Viky", "Cami", "Cele", "Martin"];
+
+        TextCu.addEventListener('click', () => {
+            if (!clickCu) {
+                clickCu = true;
+                ruleta.play();
+                iterarCuñis();
+            }
+        });
+
+        const iteraciones = 23;
+        const tiempoInicial = 10;
+        const factorReduccion = 1.02;
+
+        function iterarCuñis() {
+            let paso = 0;
+            let tiempoActual = tiempoInicial;
+
+            function mostrarItem() {
+                const index = Math.floor(Math.random() * cuñis.length);
+                TextCu.innerText = cuñis[index];
+                paso++;
+                if (paso >= iteraciones * cuñis.length) {
+                    return;
+                }
+                tiempoActual = tiempoActual * factorReduccion;
+                setTimeout(mostrarItem, tiempoActual);
+            }
+            mostrarItem();
+        }
+
+        const defectsTrigger = document.getElementById('defectsTrigger');
+        const defectsVideo = document.getElementById('defectsVideo');
+        const defectsVideoContainer = document.getElementById('defectsVideoContainer');
+        let defectsTriggered = false;
+
+        defectsTrigger.addEventListener('click', () => {
+            if (!defectsTriggered) {
+                defectsTriggered = true;
+                // Agregar clase para mostrar el contenedor
+                defectsVideoContainer.classList.add('visible');
+                defectsVideoContainer.style.display = 'block'
+                // Remover el texto "Click acá para ver"
+                defectsTrigger.querySelector('p').remove();
+                // Reproducir el video
+                defectsVideo.play().catch(function(error) {
+                    console.log("Error playing video:", error);
+                });
+            }
+        });
+
+        const ofertContainer = document.getElementById('ofert-container');
+const images = document.querySelectorAll('.ofert-image');
+const estufa = document.getElementById('estufa');
+let ofertTriggered = false;
+
+ofertContainer.addEventListener('click', () => {
+    if (!ofertTriggered) {
+        ofertTriggered = true;
+        estufa.play()
+        
+        // Remover el texto "Click acá para ver"
+        const clickText = ofertContainer.querySelector('p');
+        if (clickText) {
+            clickText.remove();
+        }
+        
+        // Mostrar cada imagen con delay
+        images.forEach((img, index) => {
+            setTimeout(() => {
+                img.classList.add('visible');
+            }, index * 1000); // 1 segundo de delay entre imágenes
+        });
+    }
+});
+        const habilidades = [
+            "Tecnico ",
+            ",Electricista ",
+            ",Gamer ",
+            ",Pioloto Espacial ",
+            ",Soy medio especial ",
+            ",Amoroso ",
+            ",Genio ",
+            ",Genio ",
+            ",Catador de mantecol ",
+            ",Comediante ",
+            ",Programador",
+            ",Puto ",
+            ",El que lee ",
+            ",Ya dije Genio? ",
+            ",Me quedo sin habilidades ",
+            ",Insertar texto aqui",
+            ",Mejor no sigas",
+            ",Vas a romper el Cv",
+            ",3 mas y te arrepientes",
+            ",2...",
+            ",1...",
+            ",1.5",
+            ",1.023044",
+            ",1.0000012",
+        ];
+        indexh = 0;
+        const habilidadesTrigger = document.getElementById('habilities-id-div');
+        const phabilities = document.getElementById('b-habilities');
+        const buVideo = document.getElementById('bu');
+        const cvContainer = document.getElementById('cv-container');
+        const clicksound = document.getElementById('click');
+        habilidadesTrigger.addEventListener('click', agregarhabilidad);
+        function agregarhabilidad() {  
+            if (indexh <= 23) {
+                click.play()
+                console.log('click')
+                let text = "";
+                text =  phabilities.innerText + text + habilidades[indexh];
+                phabilities.innerHTML = `${text}`;
+                indexh = indexh + 1   
+            }
+            if (indexh>23) {
+                cvContainer.style.display = 'none'
+                buVideo.style.display = 'block'
+                buVideo.play()
+            }
+        }
+    
+        
+
+
+    </script>
+</body>
+</html>
