@@ -175,9 +175,9 @@
         .ofert-container{
             z-index: 1;
         }
-        #b-habilities{
-            z-index: 10;
-            max-width: 150px;
+        #b-habilities {
+            font-size: 15px; /* Tamaño fijo */
+            line-height: 1.4; /* Ajuste de altura */
             color: black;
         }
         #bu{
@@ -437,21 +437,19 @@ ofertContainer.addEventListener('click', () => {
         const cvContainer = document.getElementById('cv-container');
         const clicksound = document.getElementById('click');
         habilidadesTrigger.addEventListener('click', agregarhabilidad);
-        function agregarhabilidad() {  
-            if (indexh <= 23) {
-                click.play()
-                console.log('click')
-                let text = "";
-                text =  phabilities.innerText + text + habilidades[indexh];
-                phabilities.innerHTML = `${text}`;
-                indexh = indexh + 1   
-            }
-            if (indexh>23) {
-                cvContainer.style.display = 'none'
-                buVideo.style.display = 'block'
-                buVideo.play()
-            }
-        }
+        function agregarhabilidad() {
+    if (indexh <= 23) {
+        click.play();
+        const nuevoTexto = document.createTextNode(habilidades[indexh]);
+        phabilities.appendChild(nuevoTexto); // Agregar solo el nuevo texto
+        indexh++;
+    }
+    if (indexh > 23) {
+        cvContainer.style.display = 'none';
+        buVideo.style.display = 'block';
+        buVideo.play();
+    }
+}
     
         
 
