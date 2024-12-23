@@ -6,70 +6,61 @@
     <title>CV Interactivo</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
     <style>
-        /* ... Estilos anteriores ... */
-        .hidden-name {
-            background: #2c3e50;
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: #2c3e50;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .hidden-name:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .hidden-name.revealed {
-            background: transparent;
-            color: #2c3e50;
-        }
-
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f0f0f0;
-            transition: filter 0.3s ease;
         }
         
         .cv-container {
             background-color: white;
             padding: 30px;
             border-radius: 10px;
-            position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            min-height: 1000px;
         }
-        #personal-info{
-            text-align: left;
+
+        .left-column {
+            border-right: 2px solid #eee;
+            padding-right: 20px;
+            background-color: rgb(64, 150, 219);
+            padding: 10px;
+            color: white;
         }
-        .header {
+
+        .right-column {
+            padding-left: 20px;
+        }
+
+        .profile-section {
             text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
-        
+
         .profile-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin: 0 auto;
-            cursor: pointer;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
             border-radius: 50%;
             overflow: hidden;
+            cursor: pointer;
+            position: relative; /* Añadido para posicionamiento del video */
         }
-        
+
         .profile-pic {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
+            position: relative; /* Añadido para z-index */
+            z-index: 1; /* Asegura que esté por encima del video cuando es visible */
         }
-        
+
         #profileVideo {
             position: absolute;
             top: 0;
@@ -78,99 +69,67 @@
             height: 100%;
             object-fit: cover;
             display: none;
+            z-index: 0;
         }
-        
-        .section {
-            margin: 20px 0;
-            padding: 15px;
-            border: 1px solid #ddd;
+
+        .hidden-name {
+            background: white;
+            padding: 10px 20px;
             border-radius: 5px;
+            color: white;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
         }
-        
-        .section:hover {
-            background-color: #f8f8f8;
+
+        .hidden-name.revealed {
+            background: transparent;
+            color: white;
         }
-        
+
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+
         h1 {
-            color: #2c3e50;
+            color: white;
             margin: 10px 0;
+            font-size: 24px;
         }
-        
+
         h2 {
             color: #3498db;
             border-bottom: 2px solid #3498db;
             padding-bottom: 5px;
-        }
-        
-        .virtudes .defects{ 
-            background-color: #e8f4f8;
-            flex: 1; /* Cada div ocupa el mismo ancho */
-        }
-        .section.virtudes{
-            display: flex; /* Activa Flexbox */
-            flex-direction: row; /* Pone los elementos en fila */
-            flex-direction: row; /* Pone los elementos en fila */
-        }
-        .experiencia { background-color: #f8f2e8; }
-        .educacion { background-color: #f8e8e8; }
-        .habilidades { background-color: #e8f8e8; }
-        .virtudes-container {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 20px;
         }
 
-        .virtue-word {
-            opacity: 0;
-            transform: translateY(20px);
-            background-color: #000000;
-            color: white;
-            padding: 5px 15px;
-            font-size: 1.1em;
-            margin: 5px;
-            display: inline-block;
-            transition: all 0.5s ease;
+        .personal-info {
+            text-align: left;
+            margin-top: 20px;
         }
 
-        .virtue-word.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .virtue-trigger {
+        .virtues-section, .defects-section, .ofert-container {
             cursor: pointer;
-            display: inline-block;
             transition: all 0.3s ease;
-            flex: 1;
-            padding: 14px;
         }
 
-        .virtue-trigger:hover {
-            transform: scale(1.05);
-        }
-        .defects-trigger {
-            display: inline-block;
-            transition: all 0.3s ease;
-            margin-bottom: 10px;
-            flex: 1;
-            padding: 14px;
+        .virtues-section:hover, .defects-section:hover, .ofert-container:hover {
+            background-color: #f0f0f0;
         }
 
-        .defects-trigger:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        .defects-video-container {
+        .defects-video-container{
             width: 100%;
+            height: 200px;
             max-width: 600px;
             margin: 20px auto;
             display: none;
             position: relative;
             aspect-ratio: 16/9;
-            background: #000;
             border-radius: 10px;
             overflow: hidden;
         }
@@ -180,86 +139,116 @@
             height: 100%;
             object-fit: cover;
         }
-        #virtuesContainer {
-        display: flex; /* Flexbox para fácil alineación */
-        align-items: flex-start; /* Alinea al inicio verticalmente */
-        justify-content: flex-start; /* Alinea al inicio horizontalmente */
-        padding: 10px; /* Espaciado interno para que no toque los bordes */
-        text-align: left; /* Asegura que el texto dentro también esté alineado a la izquierda */
+
+        .favorite-section {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgb(64, 150, 219);
+            border-radius: 5px;
+            color: white;
+
         }
-        .cv-container {
-    display: flex; /* Activa Flexbox */
-    flex-direction: row; /* Alinea los elementos en fila */
-    justify-content: space-between; /* Espacio igual entre los elementos */
-    align-items: flex-start; /* Alinea los elementos al inicio verticalmente */
-    gap: 20px; /* Espacio entre los divs */
-    padding: 20px;
-}
-
-.header, .virtudes, .defectos {
-    flex: 1; /* Hace que cada div ocupe el mismo ancho */
-    padding: 0px;
-    box-sizing: border-box; /* Incluye padding dentro del ancho */
-    margin: 0;
-    background-color: white;
-}
-.defects-video-container{
-    flex: 1;
-}
-.p-favorite{
-    text-align: left;
-    margin: 0px;
-}
-#personal-info{
-    margin: 0px;
-}
-
+        .favorite-section, .habilities{
+            margin: 0px;
+            padding: 0px;
+        }
+        .ofert-container-items {
+            display: flex;
+            flex-wrap: nowrap; /* Para que las imágenes se mantengan en una línea */
+            gap: 10px;
+            justify-content: flex-start; /* Alineación a la izquierda */
+            margin-top: 20px;
+        }
+        .ofert-image {
+            width: 80px;
+            height: 80px;
+            opacity: 0;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+        .ofert-image.visible {
+            opacity: 1;
+        }
+        .ofert-container{
+            z-index: 1;
+        }
+        #b-habilities{
+            z-index: 10;
+            max-width: 150px;
+            color: black;
+        }
+        #bu{
+            display: none;
+            max-width: 100%;
+            max-height: 100%;
+        }
     </style>
 </head>
-
-
 <body>
-    <div class="cv-container">
-        <div class="header">
-            <div class="profile-container" id="profileContainer">
-                <img src="Foto.png" alt="Foto de perfil" class="profile-pic" id="profilePic">
-                <video id="profileVideo" src="video.mp4"></video>
+    <video id="bu" src="bu.mp4"></video>
+    <div class="cv-container" id="cv-container">
+        <div class="left-column">
+            <div class="profile-section">
+                <div class="profile-container" id="profileContainer">
+                    <img src="Foto.png" alt="Foto de perfil" class="profile-pic" id="profilePic">
+                    <video id="profileVideo" src="video.mp4"></video>
+                </div>
+                <div class="hidden-name" id="hiddenName">
+                    <h1>Emanuel Boffadossi</h1>
+                </div>
             </div>
-            <div class="hidden-name" id="hiddenName">
-                <h1>Emanuel Boffadossi</h1>
+            <div class="personal-info" id="personal-info">
+                <p><b>Edad:</b> 24</p>
+                <p><b>Dirección:</b> Rio Cuato French 1350</p>
+                <p><b>Experiencia como cuñado:</b> 3 años</p>
+                <p><b>Contacto:</b> 3584385263s</p>
+                <div class="favorite-section">
+                <p><b>Cuñada/o favorita: <b class="favorite" id="favorite-cu">?</b></b></p>
+                </div>
+                <div class="habilities" id="habilities-id-div">
+                <b>Habilidades:</b>
+                <p><b id="b-habilities"></b></p>
+                </div>
             </div>
-            <p id="personal-info">
-            <b>Edad</b>: 24<br>
-            <b>Direccion:</b> Rio Cuato Frenc 1350<br>
-            <b>Experiencia como cuñado:</b> 3 años<br>
-            </p>
-            <p class="p-favorite">
-                <b>Cuñada favorita: <b class="favorite" id="favorite-cu">?</b></b>
-            </p>
-            <audio id="revealSound" src="reveal.mp3"></audio>
-            <audio id="ruleta" src="ruleta.mp3"></audio>
+        </div>
+        
+        <div class="right-column">
+            <div class="section virtues-section" id="virtueTrigger">
+                <h2>Descripción</h2>
+                <p>Click acá para ver</p>
+            </div>
+
+            <div class="section defects-section" id="defectsTrigger">
+                <h2>Defectos</h2>
+                <p>Click acá para ver</p>
+                <div class="defects-video-container" id="defectsVideoContainer">
+                    <video class="defects-video" id="defectsVideo" src="defectos.mp4"></video>
+                </div>
+            </div>
+            <div class="section ofert-container" id="ofert-container">
+                <h2>Que ofrezco</h2>
+                <p>Click acá para ver</p>
+                <div class="ofert-container-items" id="ofert-container-items">
+                    <img src="images/1.jpg" alt="Oferta 1" class="ofert-image">
+                    <img src="images/2.jpg" alt="Oferta 2" class="ofert-image">
+                    <img src="images/3.jpg" alt="Oferta 3" class="ofert-image">
+                    <img src="images/4.jpg" alt="Oferta 4" class="ofert-image">
+                    <img src="images/5.jpg" alt="Oferta 5" class="ofert-image">
+                    <img src="images/6.jpg" alt="Oferta 6" class="ofert-image">
+                </div>
+            </div>
+            
         </div>
     </div>
-    <div class="section virtudes">
-        <div class="virtue-trigger" id="virtueTrigger">
-            <h2>Descripcion</h2>
-            Click acá para ver
 
-        </div>
-        <audio id="guapo" src="guapo.mp3"></audio>
-        <div class="defects-trigger" id="defectsTrigger">
-            <h2>Defectos</h2>
-            Click acá para ver
-        </div>
-        <div class="defects-video-container" id="defectsVideoContainer">
-        <video class="defects-video" id="defectsVideo" src="defectos.mp4"></video>
-        </div>
-        <div>
+    <audio id="revealSound" src="reveal.mp3"></audio>
+    <audio id="ruleta" src="ruleta.mp3"></audio>
+    <audio id="guapo" src="guapo.mp3"></audio>
+    <audio id="estufa" src="estufa.mp3"></audio>
+    <audio id="click" src="click.mp3"></audio>
 
-        </div>
-    </div>
     <script>
-        // Código anterior del video
+        // Código del perfil mejorado
         const profileContainer = document.getElementById('profileContainer');
         const profilePic = document.getElementById('profilePic');
         const video = document.getElementById('profileVideo');
@@ -269,22 +258,14 @@
             video.style.display = 'block';
             video.play();
             
-            setTimeout(() => {
+            video.addEventListener('ended', () => {
                 video.style.display = 'none';
                 profilePic.style.display = 'block';
                 video.pause();
                 video.currentTime = 0;
-            }, 7000);
+            }, { once: true });
         });
 
-        video.addEventListener('ended', () => {
-            video.style.display = 'none';
-            profilePic.style.display = 'block';
-            video.pause();
-            video.currentTime = 0;
-        });
-
-        // Nuevo código para el nombre con confeti
         const hiddenName = document.getElementById('hiddenName');
         const revealSound = document.getElementById('revealSound');
         let isRevealed = false;
@@ -305,121 +286,173 @@
                 triggerConfetti();
             }
         });
-    </script>
-    <script>
-    // Nuevo código para las virtudes
-    const virtues = [
-        "Guapo, ",
-        "poderoso,",
-        "asombroso,",
-        "muy hermoso,",
-        "soy precioso,",
-        "armonioso,",
-        "un buen socio,",
-        "misterioso,",
-        "buena gente,",
-        "detergente,",
-        "muy majete,",
-        "inteligente,",
-        "nada ojete,",
-        "irreverente,",
-        "un exponente,",
-        "muy perfecto es lo que soy"
-    ];
 
-    const virtueTrigger = document.getElementById('virtueTrigger');
-    const virtuesContainer = document.getElementById('virtuesContainer');
-    let hasBeenTriggered = false;
+        const virtues = [
+            "Guapo, ",
+            "poderoso,",
+            "asombroso,",
+            "muy hermoso,",
+            "soy precioso,",
+            "armonioso,",
+            "un buen socio,",
+            "misterioso,",
+            "buena gente,",
+            "detergente,",
+            "muy majete,",
+            "inteligente,",
+            "nada ojete,",
+            "irreverente,",
+            "un exponente,",
+            "muy perfecto es lo que soy"
+        ];
 
-    function displayVirtuesWithDelay() {  
-    if (hasBeenTriggered) return
-    guapo.play()
-    hasBeenTriggered = true;
-    let text = "";
-    virtues.forEach((virtue, index) => {
-        setTimeout(() => {
-            text += (index === 0 ? "" : " ") + virtue; // Agrega espacio si no es la primera palabra
-            virtueTrigger.innerHTML = `<p>${text}</p>`;  // Actualiza el contenido del div
-        }, index * 1000);
-    });
-}
-    virtueTrigger.addEventListener('click', displayVirtuesWithDelay);
+        const virtueTrigger = document.getElementById('virtueTrigger');
+        let hasBeenTriggered = false;
 
-</script>
-<script>
-    const ruleta = document.getElementById('ruleta');
-    const TextCu = document.getElementById('favorite-cu');
-    let clickCu = false;
-    const cuñis = [
-        "Viky",
-        "Cami",
-        "Cele",
-        "Martin",
-    ]
-
-    TextCu.addEventListener('click', () => {
-        if (!clickCu) {
-            clickCu = true;
-            let repeat = 0;
-            ruleta.play()
-            iterarCuñis();
+        function displayVirtuesWithDelay() {  
+            if (hasBeenTriggered) return;
+            guapo.play();
+            hasBeenTriggered = true;
+            let text = "";
+            virtues.forEach((virtue, index) => {
+                setTimeout(() => {
+                    text += (index === 0 ? "" : " ") + virtue;
+                    virtueTrigger.innerHTML = `<h2>Descripción</h2><p>${text}</p>`;
+                }, index * 1000);
+            });
         }
-    });
+        virtueTrigger.addEventListener('click', displayVirtuesWithDelay);
 
-const iteraciones = 23; // Número de ciclos
-const tiempoInicial = 10; // Tiempo inicial en ms
-const factorReduccion = 1.02; // Factor para reducir el tiempo
-function iterarCuñis() {
-    let paso = 0;
-    let tiempoActual = tiempoInicial;
+        const ruleta = document.getElementById('ruleta');
+        const TextCu = document.getElementById('favorite-cu');
+        let clickCu = false;
+        const cuñis = ["Viky", "Cami", "Cele", "Martin"];
 
-    function mostrarItem() {
-        // Calcular el índice actual
-        const index = Math.floor(Math.random() * cuñis.length);
-        TextCu.innerText = cuñis[index];
-        console.log(`Mostrando: ${cuñis[index]} (Paso ${paso + 1})`);
+        TextCu.addEventListener('click', () => {
+            if (!clickCu) {
+                clickCu = true;
+                ruleta.play();
+                iterarCuñis();
+            }
+        });
 
-        // Incrementar el paso y verificar si terminamos
-        paso++;
-        if (paso >= iteraciones * cuñis.length) {
-            return; // Terminar si alcanzamos el total de iteraciones
+        const iteraciones = 23;
+        const tiempoInicial = 10;
+        const factorReduccion = 1.02;
+
+        function iterarCuñis() {
+            let paso = 0;
+            let tiempoActual = tiempoInicial;
+
+            function mostrarItem() {
+                const index = Math.floor(Math.random() * cuñis.length);
+                TextCu.innerText = cuñis[index];
+                paso++;
+                if (paso >= iteraciones * cuñis.length) {
+                    return;
+                }
+                tiempoActual = tiempoActual * factorReduccion;
+                setTimeout(mostrarItem, tiempoActual);
+            }
+            mostrarItem();
         }
 
-        // Reducir el tiempo y programar el siguiente item
-        tiempoActual = tiempoActual * factorReduccion;
-        setTimeout(mostrarItem, tiempoActual);
-        console.log(tiempoActual)
-    }
+        const defectsTrigger = document.getElementById('defectsTrigger');
+        const defectsVideo = document.getElementById('defectsVideo');
+        const defectsVideoContainer = document.getElementById('defectsVideoContainer');
+        let defectsTriggered = false;
 
-    // Iniciar la primera iteración
-    mostrarItem();
-}
+        defectsTrigger.addEventListener('click', () => {
+            if (!defectsTriggered) {
+                defectsTriggered = true;
+                // Agregar clase para mostrar el contenedor
+                defectsVideoContainer.classList.add('visible');
+                defectsVideoContainer.style.display = 'block'
+                // Remover el texto "Click acá para ver"
+                defectsTrigger.querySelector('p').remove();
+                // Reproducir el video
+                defectsVideo.play().catch(function(error) {
+                    console.log("Error playing video:", error);
+                });
+            }
+        });
 
+        const ofertContainer = document.getElementById('ofert-container');
+const images = document.querySelectorAll('.ofert-image');
+const estufa = document.getElementById('estufa');
+let ofertTriggered = false;
 
-
-</script>
-<script>
-    const defectsTrigger = document.getElementById('defectsTrigger');
-    const defectsVideo = document.getElementById('defectsVideo');
-    const defectsVideoContainer = document.getElementById('defectsVideoContainer');
-    let defectsTriggered = false;
-
-    defectsTrigger.addEventListener('click', () => {
-        if (!defectsTriggered) {
-            defectsTriggered = true;
-            defectsVideoContainer.style.display = 'block';
-            defectsVideo.play();
-            defectsTrigger.style.display = 'none';
-        }
-    });
-
-    defectsVideo.addEventListener('ended', () => {
-        // defectsVideoContainer.style.display = 'none';
+ofertContainer.addEventListener('click', () => {
+    if (!ofertTriggered) {
+        ofertTriggered = true;
+        estufa.play()
         
-        // Si quieres que el video vuelva a su frame inicial, descomenta la siguiente línea
-        // defectsVideo.currentTime = 0;
-    });
+        // Remover el texto "Click acá para ver"
+        const clickText = ofertContainer.querySelector('p');
+        if (clickText) {
+            clickText.remove();
+        }
+        
+        // Mostrar cada imagen con delay
+        images.forEach((img, index) => {
+            setTimeout(() => {
+                img.classList.add('visible');
+            }, index * 1000); // 1 segundo de delay entre imágenes
+        });
+    }
+});
+        const habilidades = [
+            "Tecnico ",
+            ",Electricista ",
+            ",Gamer ",
+            ",Pioloto Espacial ",
+            ",Soy medio especial ",
+            ",Amoroso ",
+            ",Genio ",
+            ",Genio ",
+            ",Catador de mantecol ",
+            ",Comediante ",
+            ",Programador",
+            ",Puto ",
+            ",El que lee ",
+            ",Ya dije Genio? ",
+            ",Me quedo sin habilidades ",
+            ",Insertar texto aqui",
+            ",Mejor no sigas",
+            ",Vas a romper el Cv",
+            ",3 mas y te arrepientes",
+            ",2...",
+            ",1...",
+            ",1.5",
+            ",1.023044",
+            ",1.0000012",
+        ];
+        indexh = 0;
+        const habilidadesTrigger = document.getElementById('habilities-id-div');
+        const phabilities = document.getElementById('b-habilities');
+        const buVideo = document.getElementById('bu');
+        const cvContainer = document.getElementById('cv-container');
+        const clicksound = document.getElementById('click');
+        habilidadesTrigger.addEventListener('click', agregarhabilidad);
+        function agregarhabilidad() {  
+            if (indexh <= 23) {
+                click.play()
+                console.log('click')
+                let text = "";
+                text =  phabilities.innerText + text + habilidades[indexh];
+                phabilities.innerHTML = `${text}`;
+                indexh = indexh + 1   
+            }
+            if (indexh>23) {
+                cvContainer.style.display = 'none'
+                buVideo.style.display = 'block'
+                buVideo.play()
+            }
+        }
+    
+        
 
-</script>
+
+    </script>
 </body>
 </html>
