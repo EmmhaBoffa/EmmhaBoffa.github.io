@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>CV Interactivo</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -162,7 +161,15 @@
             max-width: 100%;
             max-height: 100%;
         }
-
+        .favorite-section{
+            padding: 0px;
+            margin: 0px;
+        }
+        #llamada{
+            display: none;
+            height: 100px;
+            width: 300px;
+        }
         @media (min-width: 768px) {
             .cv-container {
                 grid-template-columns: 1fr 2fr;
@@ -215,7 +222,7 @@
                 <p><b>Edad:</b> 24</p>
                 <p><b>Dirección:</b> Rio Cuato French 1350</p>
                 <p><b>Experiencia como cuñado:</b> 3 años</p>
-                <p><b>Contacto:</b> 3584385263s</p>
+                <p id="contacto"> <b id=>Contacto:</b> 3584385263<video id="llamada" src="llamada.mp4"></video></p>
                 <div class="favorite-section">
                     <p><b>Cuñada/o favorita: <b class="favorite" id="favorite-cu">?</b></b></p>
                 </div>
@@ -444,7 +451,6 @@ ofertContainer.addEventListener('click', () => {
         indexh = 0;
         const habilidadesTrigger = document.getElementById('habilities-id-div');
         const phabilities = document.getElementById('b-habilities');
-        const buVideo = document.getElementById('bu');
         const cvContainer = document.getElementById('cv-container');
         const clicksound = document.getElementById('click');
         habilidadesTrigger.addEventListener('click', agregarhabilidad);
@@ -462,6 +468,14 @@ ofertContainer.addEventListener('click', () => {
         buVideo.play();
     }
 }
+    const contactoTrigger = document.getElementById('contacto')
+    const llamadasound = document.getElementById('llamada')
+    contactoTrigger.addEventListener('click', llamadavid);
+    function llamadavid() {
+        llamadasound.style.display = 'block'
+        console.log("click vid")
+        llamadasound.play()
+    }
     
         
 
